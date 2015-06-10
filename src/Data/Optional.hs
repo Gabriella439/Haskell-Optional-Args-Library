@@ -2,58 +2,92 @@
 {-# LANGUAGE DeriveFoldable    #-}
 {-# LANGUAGE DeriveTraversable #-}
 
-{-| Use the `Optional` type for optional function arguments.  For example:
+-- | Use the `Optional` type for optional function arguments.  For example:
+-- 
+-- > import Data.Optional
+-- >
+-- > greet :: Optional String -> String
+-- > greet (Specific name) = "Hello, " ++ name
+-- > greet  Default        = "Hello"
+-- 
+-- >>> greet (Specific "John")
+-- "Hello, John"
+-- >>> greet Default
+-- "Hello"
+-- 
+--     The `Optional` type overloads as many Haskell literals as possible so
+--     that you do not need to wrap values in `Specific`.  For example, if you
+--     enable the `OverloadedStrings` extension you can use a naked string
+--     literal instead:
+-- 
+-- >>> :set -XOverloadedStrings
+-- >>> greet "John"
+-- "Hello, John"
+-- 
+--     The `Optional` type also implements `Num` and `Fractional`, so you can
+--     use numeric literals in place of `Optional` values:
+-- 
+-- > birthday :: Optional Int -> String
+-- > birthday (Specific age) = "You are " ++ show age ++ " years old!"
+-- > birthday  Default       = "You are one year older!"
+-- 
+-- >>> birthday 20
+-- "You are 20 years old!"
+-- >>> birthday Default
+-- "You are one year older!"
+-- 
+--     The `IsString`, `Num`, and `Fractional` instances are recursive, so you
+--     can wrap your types in a more descriptive newtype and derive `IsString`,
+--     `Num` or `Fractional`:
+-- 
+-- > {-# LANGUAGE GeneralizedNewtypeDeriving #-}
+-- > 
+-- > import Data.Optional
+-- > import Data.String (IsString)
+-- > 
+-- > newtype Name = Name { getName :: String } deriving (IsString)
+-- > 
+-- > greet :: Optional Name -> String
+-- > greet (Specific name) = "Hello, " ++ getName name
+-- > greet  Default        = "Hello"
+-- > 
+-- > newtype Age = Age { getAge :: Int } deriving (Num)
+-- > 
+-- > birthday :: Optional Age -> String
+-- > birthday (Specific age) = "You are " ++ show (getAge age) ++ " years old!"
+-- > birthday  Default       = "You are one year older!"
+-- 
+--     ... and you would still be able to provide naked numeric or string
+--     literals:
+-- 
+-- >>> :set -XOverloadedStrings
+-- >>> greet "John"
+-- "Hello, John"
+-- >>> birthday 20
+-- "You are 20 years old!"
+-- 
+--     You can use `empty` as a short-hand for a `Default` argument:
+-- 
+-- >>> greet empty
+-- "Hello"
+-- >>> birthday empty
+-- "You are one year older!"
+-- 
+--     You can also use `pure` as a short-hand for a `Specific` argument:
+-- 
+-- >>> greet (pure "John")
+-- "Hello, John"
+-- >>> birthday (pure 20)
+-- "You are 20 years old!"
 
-> import Data.Optional
->
-> greet :: Optional String -> String
-> greet (Specific name) = "Hello, " ++ name
-> greet  Default        = "Hello"
+module Data.Optional (
+    -- * Optional
+      Optional(..)
 
->>> greet (Specific "John")
-"Hello, John"
->>> greet Default
-"Hello"
-
-    The `Optional` type overloads as many Haskell literals as possible so that
-    you do not need to wrap values in `Specific`.  For example, if you enable
-    the `OverloadedStrings` extension you can use a naked string literal
-    instead:
-
->>> :set -XOverloadedStrings
->>> greet "John"
-"Hello, John"
-
-    The `Optional` type also implements `Num` and `Fractional`, so you can
-    use numeric literals in place of `Optional` values:
-
-> birthday :: Optional Int -> String
-> birthday (Specific age) = "You are " ++ show age ++ " years old!"
-> birthday  Default       = "You are one year older!"
-
->>> birthday 20
-"You are 20 years old!"
->>> birthday Default
-"You are one year older!"
-
-    You can use `empty` as a short-hand for `Default`:
-
->>> import Control.Applicative
->>> greet empty
-"Hello"
->>> birthday empty
-"You are one year older!"
-
-    You can also use `pure` as a short-hand for `Specific`:
-
->>> greet (pure "John")
-"Hello, John"
->>> birthday (pure 20)
-"You are 20 years old!"
-
--}
-
-module Data.Optional where
+    -- * Re-exports
+    , empty
+    , pure
+    ) where
 
 import Control.Applicative (Applicative(..), Alternative(..), liftA2)
 import Control.Monad (MonadPlus(..))
