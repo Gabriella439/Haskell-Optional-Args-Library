@@ -1,4 +1,4 @@
-Name: optional
+Name: optional-args
 Version: 1.0.0
 Cabal-Version: >=1.10
 Build-Type: Simple
@@ -7,7 +7,7 @@ License-File: LICENSE
 Copyright: 2015 Gabriel Gonzalez
 Author: Gabriel Gonzalez
 Maintainer: Gabriel439@gmail.com
-Bug-Reports: https://github.com/Gabriel439/Haskell-Optional-Library/issues
+Bug-Reports: https://github.com/Gabriel439/Haskell-Optional-Args-Library/issues
 Synopsis: Optional function arguments
 Description: This library provides a type for specifying `Optional` function
   arguments
@@ -16,7 +16,7 @@ Description: This library provides a type for specifying `Optional` function
 Category: Data
 Source-Repository head
     Type: git
-    Location: https://github.com/Gabriel439/Haskell-Optional-Library
+    Location: https://github.com/Gabriel439/Haskell-Optional-Args-Library
 
 Library
     HS-Source-Dirs: src
