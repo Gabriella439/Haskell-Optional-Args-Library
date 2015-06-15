@@ -13,7 +13,7 @@ Description: This library provides a type for specifying `Optional` function
   arguments
   .
   Read the tutorial in "Data.Optional" to learn more
-Category: System
+Category: Data
 Source-Repository head
     Type: git
     Location: https://github.com/Gabriel439/Haskell-Optional-Library
