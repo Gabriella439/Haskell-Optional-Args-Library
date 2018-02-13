@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP               #-}
 {-# LANGUAGE DeriveFunctor     #-}
 {-# LANGUAGE DeriveFoldable    #-}
 {-# LANGUAGE DeriveTraversable #-}
@@ -97,6 +98,7 @@ import Control.Monad (MonadPlus(..))
 import Data.Foldable (Foldable)
 import Data.Traversable (Traversable)
 import Data.Monoid (Monoid(..))
+import Data.Semigroup (Semigroup(..))
 import Data.String (IsString(..))
 
 -- | A function argument that has a `Default` value
@@ -125,10 +127,15 @@ instance MonadPlus Optional where
     mzero = empty
     mplus = (<|>)
 
+instance Semigroup a => Semigroup (Optional a) where
+    (<>) = liftA2 (<>)
+
 instance Monoid a => Monoid (Optional a) where
     mempty = pure mempty
 
+#if !(MIN_VERSION_base(4,11,0))
     mappend = liftA2 mappend
+#endif
 
 instance IsString a => IsString (Optional a) where
     fromString str = pure (fromString str)
