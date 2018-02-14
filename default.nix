@@ -1,7 +1,7 @@
 { mkDerivation, base, stdenv }:
 mkDerivation {
   pname = "optional-args";
-  version = "1.0.1";
+  version = "1.0.2";
   src = ./.;
   libraryHaskellDepends = [ base ];
   description = "Optional function arguments";
