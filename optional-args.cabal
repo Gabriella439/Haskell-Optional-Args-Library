@@ -21,6 +21,8 @@ Source-Repository head
 Library
     HS-Source-Dirs: src
     Build-Depends: base >= 4.5 && < 5
+    if !impl(ghc >= 8.0)
+      Build-Depends: semigroups >= 0.16 && < 0.19
     Exposed-Modules: Data.Optional
     GHC-Options: -O2 -Wall
     Default-Language: Haskell2010
