@@ -112,7 +112,6 @@ instance Applicative Optional where
     _          <*> _          = Default
 
 instance Monad Optional where
-    return = Specific
 
     Default    >>= _ = Default
     Specific x >>= f = f x
